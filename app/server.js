@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const { Allrouters } = require("./router/router");
 
 module.exports = class Application {
   #app = express();
@@ -16,26 +17,25 @@ module.exports = class Application {
     this.errorHandling();
   }
   configApplication() {
-    console.log(1, true);
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(express(path.join(__dirname, "..", "public")));
   }
   createServer() {
     const http = require("http");
-    console.log("server");
     http.createServer(this.#app).listen(this.#PORT, () => {
       console.log("running => http://localhost:" + this.#PORT);
     });
   }
   connectToMongoDb() {
-    console.log("mongo");
     mongoose.connect(this.#Db_URI, (error) => {
       if (!error) return console.log("connect to mongoDB");
       return console.log("error to connect mongo db");
     });
   }
-  createRoute() {}
+  createRoute() {
+    this.#app.use(Allrouters)
+  }
   errorHandling() {
     this.#app.use((req, res) => {
       return res.json({
