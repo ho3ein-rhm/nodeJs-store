@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
 
-const schema = new mongoose.Schema({});
+const schema = new mongoose.Schema({
+  title: {type: String},
+  text: {type: String},
+  image: {type: String},
+  type: {type: String, default: 'base'}
+});
 
 module.exports = {
-  sliderSchema: mongoose.model("", schema),
+  sliderModel: mongoose.model("slider", schema),
 };

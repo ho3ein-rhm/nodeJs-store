@@ -7,12 +7,12 @@ const schema = new mongoose.Schema({
   images: { type: String },
   tags: { type: [String], default: [] },
   category: { type: mongoose.Types.ObjectId, required: true },
-  cumments: { type: [], default: [] },
+  comments: { type: [], default: [] },
   like: { type: [mongoose.Types.ObjectId], default: [] },
   deslike: { type: [mongoose.Types.ObjectId], default: [] },
   bookmark: { type: [mongoose.Types.ObjectId], default: [] },
 });
 
 module.exports = {
-  blogSchema: mongoose.model("", schema),
+  blogModel: mongoose.model("blog", schema),
 };
