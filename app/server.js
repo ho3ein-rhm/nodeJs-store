@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const createError = require("http-errors");
 const path = require("path");
 const { Allrouters } = require("./router/router");
 
@@ -40,28 +41,28 @@ module.exports = class Application {
     // mongoose.connection.on("disconnected", () =>{
     //   console.log('mongoose connection is disconnected!')
     // })
-    process.on("SIGINT", async() =>{
+    process.on("SIGINT", async () => {
       await mongoose.connection.close();
-      console.log("❌disconnected!❌")
+      console.log("❌disconnected!❌");
       process.exit(0);
-    })
+    });
   }
   createRoute() {
-    this.#app.use(Allrouters)
+    this.#app.use(Allrouters);
   }
   errorHandling() {
-    this.#app.use((req, res) => {
-      return res.json({
-        satatusCode: 404,
-        message: "صفحه مورد نظر یافت نشد!",
-      });
+    this.#app.use((req, res, next) => {
+      next(createError.NotFound("آدرس مورد نظر یافت نشد!"));
     });
-    this.#app.use((error, req, res) => {
-      const satatusCode = error.satsus || 500;
-      const message = error.message || "Interal Server Error";
-      return res.satsus(satatusCode).json({
-        satatusCode,
-        message,
+    this.#app.use((error, req, res, next) => {
+      const serverError = createError.InternalServerError();
+      const statusCode = error.satsus || serverError.status;
+      const message = error.message || serverError.message;
+      return res.status(statusCode).json({
+        errors: {
+          statusCode,
+          message,
+        },
       });
     });
   }
