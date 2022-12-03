@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
     type: Object,
     default: {
       code: "",
-      expires: new Date() + 120,
+      expires: 0,
     },
   },
   bills : {
@@ -20,6 +20,8 @@ const schema = new mongoose.Schema({
   discount: {type: Number , default: 0},
   birthday: {type: String},
   roles: {type: [String] , default: ["USER"]}
+},{
+  timestamps: true
 });
 
 module.exports = {
