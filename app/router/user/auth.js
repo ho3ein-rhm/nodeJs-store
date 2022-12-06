@@ -26,7 +26,36 @@ const router = require("express").Router();
  * 
  */
 
-router.post("/login", UserAuthController.login);
+/**
+ * @swagger
+ * /user/check-otp:
+ *  post:
+ *      summery: check Otp code 
+ *      tags: [user auth]
+ *      description: final opration for login
+ *      parameters:
+ *      -   name: phone
+ *          description: fa-IRI phonenumber
+ *          in: formData
+ *          required: true
+ *          type: string
+ *      -   name: code 
+ *          description: one time password
+ *          in: formData
+ *          required: true
+ *          type: string
+ *      responses: 
+ *          201:
+ *              description: Success
+ *          400: 
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500: 
+ *              description: Internal Server Error  
+ */
+router.post("/login", UserAuthController.getOtp);
+router.post("/check-otp", UserAuthController.checkCode);
 
 module.exports = {
     UserAuth : router
