@@ -13,7 +13,7 @@ signAccessToken = (userID) =>{
         const user = await userModel.findById(userID);
         const payload = {
             mobile: user.phone,
-            userId : user.id
+            //userId : user.id
         }
         const secret = SECRET_KEY
         const options = {
