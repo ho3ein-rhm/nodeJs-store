@@ -4,7 +4,9 @@ const {
   authSchema,
   checkCodeSchema,
 } = require("../../../validators/user/auth.schema");
-const { randomDigitNumber, signAccessToken } = require("../../../../utils/functions");
+const { randomDigitNumber, signAccessToken , signRefreshToken} = require("../../../../utils/functions");
+const { verifyRefreshToken } = require("../../../middlewares/verifyAcessToken");
+const { userModel } = require("../../../../models/user");
 
 module.exports = new (class UserAuthController extends Controller {
   async getOtp(req, res, next) {
@@ -71,10 +73,12 @@ module.exports = new (class UserAuthController extends Controller {
           throw createHttpError.Unauthorized("کد شما منقضی شده است");
         }
         const accessToken = await signAccessToken(findUser.id);
+        const refreshToken = await signRefreshToken(findUser.id);
         res.json({
           data: {
             statusCode: 200,
             accessToken,
+            refreshToken,
             message: "Welcome!",
           },
         });
@@ -89,5 +93,18 @@ module.exports = new (class UserAuthController extends Controller {
     } catch (error) {
       next(error);
     }
+  }
+  async refreshToken (req, res , next)  {
+    const  {refreshToken} = req.body
+    const mobile = await verifyRefreshToken(refreshToken);
+    const user = await userModel.findOne({mobile});
+    const accessToken = await signAccessToken(user.id);
+    const newRefreshToken =  await signRefreshToken(user.id);
+    res.json({
+      data: {
+        accessToken,
+        refreshtoken : newRefreshToken
+      }
+    })
   }
 })();

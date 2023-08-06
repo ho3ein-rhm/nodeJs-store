@@ -56,6 +56,22 @@ const router = require("express").Router();
  */
 router.post("/login", UserAuthController.getOtp);
 router.post("/check-otp", UserAuthController.checkCode);
+/**
+ * @swagger
+ * /user/refresh-token:
+ *  post: 
+ *      summery: sign reftersh token
+ *      parameters:
+ *      -       in: formData
+ *              required: true
+ *              type: string
+ *              name: refreshToken
+ *      responses:
+ *          200:
+ *              description: success
+ *      
+ */
+router.post("/refresh-token", UserAuthController.refreshToken)
 
 module.exports = {
     UserAuth : router

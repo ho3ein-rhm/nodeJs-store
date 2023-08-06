@@ -13,20 +13,35 @@ signAccessToken = (userID) =>{
         const user = await userModel.findById(userID);
         const payload = {
             mobile: user.phone,
-            //userId : user.id
         }
-        const secret = SECRET_KEY
         const options = {
             expiresIn : '1h'
         }
-        jwt.sign(payload, secret , options , (err , token) =>{
+        jwt.sign(payload, SECRET_KEY , options , (err , token) =>{
             if(err) reject(createHttpError.InternalServerError("خطای سرور"))
             resolve(token)
         })
     })
 }
 
+signRefreshToken = (userID) => {
+  return new Promise(async (resolve, reject) => {
+    const user = await userModel.findById(userID);
+    const payload = {
+        mobile: user.phone,
+    };
+    const options = {
+      expiresIn: "1y",
+    };
+    jwt.sign(payload, SECRET_KEY, options, (err, token) => {
+      if (err) reject(createHttpError.InternalServerError("خطای سرور"));
+      resolve(token);
+    });
+  });
+};
+
 module.exports = {
   randomDigitNumber,
   signAccessToken,
+  signRefreshToken,
 };
