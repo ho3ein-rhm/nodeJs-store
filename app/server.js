@@ -19,6 +19,7 @@ module.exports = class Application {
     this.createServer();
     this.createRoute();
     this.errorHandling();
+    this.initRedis();
   }
   configApplication() {
     this.#app.use(morgan("dev"));
@@ -70,6 +71,9 @@ module.exports = class Application {
       console.log("❌disconnected!❌");
       process.exit(0);
     });
+  }
+  initRedis(){
+    require("./utils/init-redis")
   }
   createRoute() {
     this.#app.use(Allrouters);
