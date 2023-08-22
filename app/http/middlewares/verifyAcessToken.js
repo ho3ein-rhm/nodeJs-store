@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
 const { SECRET_KEY } = require("../../utils/constants");
 const { userModel } = require("../../models/user");
+const redisClient = require('../../utils/init-redis');
 
 function verifyAcsessToken(req, res, next) {
   const headers = req.headers;
@@ -27,9 +28,13 @@ function verifyRefreshToken(token) {
       const { mobile } = decode || {};
       const user = await userModel.findOne(
         { mobile },
-        { password: 0, otp: 0, discount: 0, bills: 0, _id: 0 }
+        { password: 0, otp: 0, discount: 0, bills: 0}
       );
       if (!user) reject(next(createError.Unauthorized("خطایی  رخ داده است ")));
+      const refreshToken = await redisClient.get(user.id);
+      console.log(refreshToken);
+      if(token == refreshToken) return resolve(mobile);
+      reject(createError.Unauthorized("ورود مجدد به حساب  کاربری  انجام نشد ")); 
       resolve(mobile);
     });
   });
