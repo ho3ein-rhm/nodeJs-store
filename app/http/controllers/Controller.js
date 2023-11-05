@@ -1,10 +1,11 @@
 const autoBind = require("auto-bind");
 const { userModel } = require("../../models/user");
 const { categoryModel } = require("../../models/category");
-
+const { blogModel } = require("../../models/blog");
+const { commentModel } = require("../../models/comments");
 module.exports = class Controller {
   constructor() {
     autoBind(this);
-    this.models = { userModel, categoryModel };
+    this.models = { userModel, categoryModel, blogModel, commentModel };
   }
 };
