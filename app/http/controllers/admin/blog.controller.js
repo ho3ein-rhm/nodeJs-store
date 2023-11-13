@@ -1,12 +1,25 @@
 const Controller = require("../Controller");
 const { createBlogSchema } = require("../../validators/admin/blog.schema");
+const path = require("path");
+const { log } = require("console");
+const { deleteFile } = require("../../../utils/functions");
 
 class BlogController extends Controller {
   async addBlog(req, res, next) {
     try {
       const blogValidate = await createBlogSchema.validateAsync(req.body);
-      return res.json(blogValidate);
+      const image = path.join(
+        blogValidate.fileUploadPath + "/" + blogValidate.fileName
+      );
+      req.body.image = image.replace(/\\/g, "/");
+      const blog = await this.models.blogModel.create(req.body);
+      return res.json({
+        statusCode: 200,
+        data: blog,
+        message: "Craete successfully!",
+      });
     } catch (error) {
+      deleteFile(req.body.image);
       next(error);
     }
   }
