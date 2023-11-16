@@ -44,7 +44,12 @@ const fileFilter = (req, file, cb) => {
   }
   return cb(createHttpError.BadRequest("فرمت فایل صحیح نمیباشد"));
 };
-const fileUpload = multer({ storage, fileFilter });
+const maxSize = 1 * 1000 * 1000;
+const fileUpload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: maxSize },
+});
 module.exports = {
   fileUpload,
 };

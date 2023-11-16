@@ -2,12 +2,16 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema(
   {
-    author: { type: mongoose.Types.ObjectId, required: true },
+    author: { type: mongoose.Types.ObjectId, ref: "user", required: true },
     title: { type: String },
     text: { type: String },
     images: { type: String },
     tags: { type: [String], default: [] },
-    category: { type: mongoose.Types.ObjectId, required: true },
+    category: {
+      type: mongoose.Types.ObjectId,
+      ref: "category",
+      required: true,
+    },
     comments: { type: [], default: [] },
     like: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
     deslike: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
