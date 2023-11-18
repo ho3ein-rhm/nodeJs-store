@@ -44,8 +44,10 @@ signRefreshToken = (userID) => {
   });
 };
 deleteFile = (fileAddress) => {
-  filePath = path.join(__dirname, "..", "..", "public", fileAddress);
-  fs.unlinkSync(filePath);
+  if (fileAddress) {
+    filePath = path.join(__dirname, "..", "..", "public", fileAddress);
+    fs.unlinkSync(filePath);
+  }
 };
 module.exports = {
   randomDigitNumber,

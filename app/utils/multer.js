@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const createHttpError = require("http-errors");
 function craeteRoute(req) {
+  console.log("here 2.1");
   const date = new Date();
   const day = date.getDate().toString();
   const month = date.getMonth().toString();
@@ -19,22 +20,27 @@ function craeteRoute(req) {
     day
   );
   req.body.fileUploadPath = path.join("uploads", "blogs", year, month, day);
-  console.log(req.body.fileUploadPath);
   fs.mkdirSync(directory, { recursive: true });
   return directory;
 }
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const filePath = craeteRoute(req);
-    cb(null, filePath);
+    if (file?.originalname) {
+      const filePath = craeteRoute(req);
+      return cb(null, filePath);
+    }
+    cb(null, null);
   },
   filename: (req, file, cb) => {
-    // const ext = path.extname(file.originalname);
-    const fileName = String(
-      new Date().getTime() + "_" + file.originalname.replace(/\s/g, "")
-    );
-    req.body.fileName = fileName;
-    cb(null, fileName);
+    if (file?.originalname) {
+      // const ext = path.extname(file.originalname);
+      const fileName = String(
+        new Date().getTime() + "_" + file.originalname.replace(/\s/g, "")
+      );
+      req.body.fileName = fileName;
+      return cb(null, fileName);
+    }
+    cb(null, null);
   },
 });
 const fileFilter = (req, file, cb) => {
