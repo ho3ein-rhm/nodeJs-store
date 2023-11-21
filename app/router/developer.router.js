@@ -12,6 +12,7 @@ const bcrypt = require("bcrypt");
  * /developer/hash-Password/{password}:
  *  get:
  *      summary: developer route
+ *      tags: [Developer-Routes]
  *      description: get password and hash it
  *      parameters:
  *          -   in: path

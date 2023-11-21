@@ -32,6 +32,7 @@ module.exports = class Application {
       swaggerUi.setup(
         swaggerJsDoc({
           swaggerDefinition: {
+            openapi: "3.0.0",
             info: {
               title: "Store Project",
               version: "1.0.0",
@@ -43,8 +44,9 @@ module.exports = class Application {
               },
             ],
           },
-          apis: ["./app/router/*/*.js"],
-        })
+          apis: ["./app/router/**/*.js"],
+        }),
+        { explorer: true }
       )
     );
   }
@@ -72,8 +74,8 @@ module.exports = class Application {
       process.exit(0);
     });
   }
-  initRedis(){
-    require("./utils/init-redis")
+  initRedis() {
+    require("./utils/init-redis");
   }
   createRoute() {
     this.#app.use(Allrouters);
