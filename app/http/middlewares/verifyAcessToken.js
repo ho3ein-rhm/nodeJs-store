@@ -6,9 +6,11 @@ const redisClient = require("../../utils/init-redis");
 
 function verifyAcsessToken(req, res, next) {
   const headers = req.headers;
-  const token = headers?.accesstoken || "";
-  if (!token)
+  const tokenschema = headers?.authorization || "";
+  if (!tokenschema)
     return next(createError.Unauthorized("وارد حساب  کاربری  خود شوید"));
+  const tokenArray = tokenschema.split(" ");
+  const token = tokenArray[1];
   jwt.verify(token, SECRET_KEY, async (err, decode) => {
     if (err)
       return next(createError.Unauthorized("مجدد وارد حساب  کاربری  خود شوید"));
@@ -33,7 +35,6 @@ function verifyRefreshToken(token) {
       );
       if (!user) reject(next(createError.Unauthorized("خطایی  رخ داده است ")));
       const refreshToken = await redisClient.get(user.id);
-      console.log(refreshToken);
       if (token == refreshToken) return resolve(mobile);
       reject(createError.Unauthorized("ورود مجدد به حساب  کاربری  انجام نشد "));
       resolve(mobile);
@@ -43,7 +44,6 @@ function verifyRefreshToken(token) {
 function checkRole(role) {
   return function (req, res, next) {
     try {
-      console.log(req.user.roles);
       if (req.user.roles.includes(role)) return next();
       throw createError.Forbidden("شما به محتوا دسترسی ندارید!");
     } catch (error) {

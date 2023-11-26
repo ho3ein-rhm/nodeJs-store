@@ -4,7 +4,7 @@ const schema = new mongoose.Schema(
   {
     user: { type: mongoose.Types.ObjectId, ref: "user", required: true },
     comment: { type: String, required: true },
-    parent: { type: mongoose.Types.ObjectId },
+    parent: { type: mongoose.Types.ObjectId, ref: "comments" },
   },
   {
     timestamps: true,
@@ -13,5 +13,5 @@ const schema = new mongoose.Schema(
 );
 
 module.exports = {
-  commentModel: mongoose.model("comments", schema),
+  CommentSchema: mongoose.model("comments", schema),
 };

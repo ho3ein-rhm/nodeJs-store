@@ -1,41 +1,48 @@
 const mongoose = require("mongoose");
+const { CommentSchema } = require("./comments");
 
-const schema = new mongoose.Schema(
+const ProductSchema = new mongoose.Schema(
   {
-    title: { type: String },
-    short_desc: { type: String },
-    total_desc: { type: String },
-    images: { type: [String] },
+    title: { type: String, required: true },
+    short_text: { type: String, required: true },
+    text: { type: String, required: true },
+    images: { type: [String], required: true },
     tags: { type: [String], default: [] },
-    like: { type: [mongoose.Types.ObjectId], default: [] },
-    deslike: { type: [mongoose.Types.ObjectId], default: [] },
-    comments: { type: [mongoose.Types.ObjectId], default: [] },
-    category: { type: mongoose.Types.ObjectId },
-    bookmark: { type: [mongoose.Types.ObjectId], default: [] },
+    category: {
+      type: mongoose.Types.ObjectId,
+      ref: "category",
+      required: true,
+    },
+    comments: { type: [CommentSchema], default: [] },
+    likes: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
+    dislikes: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
+    bookmarks: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
     price: { type: Number, default: 0 },
-    discount: { type: String, default: 0 },
+    discount: { type: Number, default: 0 },
     count: { type: Number },
-    type: { type: String },
-    time: { type: String },
+    type: { type: String, required: true }, //virtual - physici
     format: { type: String },
-    teacher: { type: mongoose.Types.ObjectId },
-    feture: {
+    supplier: { type: mongoose.Types.ObjectId, ref: "user", required: true },
+    features: {
       type: Object,
       default: {
         length: "",
         height: "",
-        witdth: "",
-        weigth: "",
-        color: "",
+        width: "",
+        weight: "",
+        colors: [],
         madein: "",
       },
     },
   },
   {
+    toJSON: {
+      virtuals: true,
+    },
     timestamps: true,
   }
 );
 
 module.exports = {
-  productModel: mongoose.model("product", schema),
+  ProductSchema: mongoose.model("product", schema),
 };

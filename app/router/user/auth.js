@@ -3,17 +3,46 @@ const UserAuthController = require("../../http/controllers/user/auth/auth.contro
 const router = require("express").Router();
 /**
  * @swagger
+ *  components:
+ *    schemas:
+ *        GetOTP:
+ *            type: object
+ *            required:
+ *                -   phone
+ *            properties:
+ *                phone:
+ *                    type: string
+ *                    description: them user  phone password
+ *        checkOTP:
+ *            type: object
+ *            required:
+ *                -   phone
+ *                -   code
+ *            properties:
+ *                phone:
+ *                    type: string
+ *                    description: user phone for login
+ *                code:
+ *                   type: integer
+ *                   description: reviced code getotp
+ */
+
+/**
+ * @swagger
  * /user/login:
  *  post:
  *      summery: login to user panel
  *      tags: [user auth]
  *      descripton: password(OTP) one time
- *      parameters:
- *      -   name: phone
- *          description: fa-IRI phonenumber
- *          in: formData
+ *      requestBody:
  *          required: true
- *          type: string
+ *          content:
+ *            application/x-www-form-urlencoded:
+ *                schema:
+ *                    $ref: '#/components/schemas/GetOTP'
+ *            application/json:
+ *                schema:
+ *                    $ref: '#/components/schemas/GetOTP'
  *      responses:
  *          201:
  *              description: Success
@@ -33,17 +62,15 @@ const router = require("express").Router();
  *      summery: check Otp code
  *      tags: [user auth]
  *      description: final opration for login
- *      parameters:
- *      -   name: phone
- *          description: fa-IRI phonenumber
- *          in: formData
+ *      requestBody:
  *          required: true
- *          type: string
- *      -   name: code
- *          description: one time password
- *          in: formData
- *          required: true
- *          type: string
+ *          content:
+ *            application/x-www-form-urlencoded:
+ *                schema:
+ *                    $ref: '#/components/schemas/checkOTP'
+ *            application/json:
+ *                schema:
+ *                    $ref: '#/components/schemas/checkOTP'
  *      responses:
  *          201:
  *              description: Success
@@ -55,7 +82,6 @@ const router = require("express").Router();
  *              description: Internal Server Error
  */
 router.post("/login", UserAuthController.getOtp);
-router.post("/check-otp", UserAuthController.checkCode);
 /**
  * @swagger
  * /user/refresh-token:
@@ -72,6 +98,7 @@ router.post("/check-otp", UserAuthController.checkCode);
  *              description: success
  *
  */
+router.post("/check-otp", UserAuthController.checkCode);
 router.post("/refresh-token", UserAuthController.refreshToken);
 
 module.exports = {

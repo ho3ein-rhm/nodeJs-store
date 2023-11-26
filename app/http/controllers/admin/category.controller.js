@@ -163,9 +163,11 @@ class categoryController extends Controller {
   async deleteallCategort(req, res, next) {
     try {
       const { id } = req.params;
+      console.log(id);
       const category = await this.checkExistCategory(id);
+      console.log(category);
       const deletedCategory = await this.models.categoryModel.deleteMany({
-        $or: [{ _id: category.id }, { parent: category.id }],
+        $or: [{ _id: category._id }, { parent: category._id }],
       });
       if (deletedCategory.deletedCount == 0)
         throw createHttpError.InternalServerError("حذف دسته بندی  انجام نشد ");
