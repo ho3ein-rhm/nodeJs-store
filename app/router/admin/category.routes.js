@@ -34,12 +34,6 @@ const router = require("express").Router();
  *      summery: craete category
  *      tags: [Category-Routes]
  *      description: creating the category
- *      parameters:
- *          -  in: header
- *             value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTM2MzE2MjAzNyIsImlhdCI6MTcwMDY3NDY4NCwiZXhwIjoxNzAwNjc4Mjg0fQ.lq9LlHecdMs1dAyoRr1ZdaWOhPwpmC6NjgC9L_p5Xe4
- *             name: accesstoken
- *             type: string
- *             required: true
  *      requestBody:
  *          required: true
  *          content:
@@ -70,10 +64,6 @@ router.delete("/delete-category/:id", categoryController.deleteCategory);
  *      summary: category route
  *      tags: [Category-Routes]
  *      description: get all data for  category
- *      parameters:
- *          -   in: header
- *              name: accessToken
- *              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTM2MzE2MjAzNyIsImlhdCI6MTcwMDY3NDY4NCwiZXhwIjoxNzAwNjc4Mjg0fQ.lq9LlHecdMs1dAyoRr1ZdaWOhPwpmC6NjgC9L_p5Xe4
  *      responses:
  *          200:
  *              description: success

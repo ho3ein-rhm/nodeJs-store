@@ -3,7 +3,6 @@ const path = require("path");
 const fs = require("fs");
 const createHttpError = require("http-errors");
 function craeteRoute(req) {
-  console.log("here 2.1");
   const date = new Date();
   const day = date.getDate().toString();
   const month = date.getMonth().toString();

@@ -13,11 +13,11 @@ const ProductSchema = new mongoose.Schema(
       ref: "category",
       required: true,
     },
-    comments: { type: [CommentSchema], default: [] },
+    comments: { type: [CommentSchema.schema], default: [] },
     likes: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
     dislikes: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
     bookmarks: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
-    price: { type: Number, default: 0 },
+    price: { type: String, default: 0 },
     discount: { type: Number, default: 0 },
     count: { type: Number },
     type: { type: String, required: true }, //virtual - physici
@@ -44,5 +44,5 @@ const ProductSchema = new mongoose.Schema(
 );
 
 module.exports = {
-  ProductSchema: mongoose.model("product", schema),
+  ProductSchema: mongoose.model("product", ProductSchema),
 };

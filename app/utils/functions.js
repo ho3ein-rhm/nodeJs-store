@@ -49,9 +49,19 @@ deleteFile = (fileAddress) => {
     fs.unlinkSync(filePath);
   }
 };
+ListOfImageFromRequest = (files, fileUploadPath) => {
+  if (files.length > 0) {
+    return files
+      .map((file) => path.join(fileUploadPath, file.filename))
+      .map((e) => e.replace(/\\/g, "/"));
+  } else {
+    return [];
+  }
+};
 module.exports = {
   randomDigitNumber,
   signAccessToken,
   signRefreshToken,
   deleteFile,
+  ListOfImageFromRequest,
 };
