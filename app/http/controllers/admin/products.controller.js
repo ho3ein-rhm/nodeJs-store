@@ -5,9 +5,10 @@ const {
 const {
   createProductSchema,
 } = require("../../validators/admin/product.schema");
-const path = require("path");
 
 const Controller = require("../Controller");
+const { objectIdValidator } = require("../../validators/public.validator");
+const createHttpError = require("http-errors");
 
 class productController extends Controller {
   async addproduct(req, res, next) {
@@ -62,6 +63,12 @@ class productController extends Controller {
     } catch (error) {
       next(error);
     }
+  }
+  async findProductById(productId) {
+    const { id } = await objectIdValidator.validateAsync({ id: productId });
+    const product = await this.models.ProductSchema.findById(id);
+    if (!product) throw createHttpError.BadRequest("محصول یافت نشد ");
+    return product;
   }
 }
 
