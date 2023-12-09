@@ -21,14 +21,20 @@ class productController extends Controller {
       const { phone } = req.user;
       const user = await this.models.userModel.findOne({ phone });
       req.body.supplier = user.id;
-      req.body.type = "physici";
+      req.body.type = "virtual";
       if (
-        product.height == 0 &&
-        product.weight == 0 &&
-        product.width == 0 &&
-        product.length == 0
+        +product.height !== 0 &&
+        +product.weight !== 0 &&
+        +product.width !== 0 &&
+        +product.length !== 0
       ) {
-        req.body.type = "virtual";
+        req.body.type = "physici";
+        req.body.features = {
+          height: product.height,
+          weight: product.weight,
+          width: product.width,
+          length: product.length,
+        };
       }
       const data = await this.models.ProductSchema.create(req.body);
       res.json({
@@ -59,6 +65,18 @@ class productController extends Controller {
       res.json({
         message: "find result",
         data: products,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getOneProductById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const product = await this.findProductById(id);
+      res.status(200).json({
+        statusCode: 200,
+        data: { product },
       });
     } catch (error) {
       next(error);

@@ -12,8 +12,8 @@ const createProductSchema = Joi.object({
   short_text: Joi.string().error(
     createHttpError.BadRequest("متن ارسال شده صحصح نمی باشد")
   ),
-  image: Joi.string()
-    .pattern(/(\.png|\.jpeg|\.jpg)$/)
+  images: Joi.array()
+    .allow()
     .error(createHttpError.BadRequest("تصاویر ارسال شده صحیح نمی باشد")),
   tags: Joi.string()
     .min(0)
