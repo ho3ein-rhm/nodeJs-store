@@ -1,7 +1,6 @@
 const createHttpError = require("http-errors");
 const jwt = require("jsonwebtoken");
 const { userModel } = require("../models/user");
-const user = require("../models/user");
 const { SECRET_KEY } = require("./constants");
 const redisClient = require("./init-redis");
 const path = require("path");

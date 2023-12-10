@@ -113,9 +113,10 @@ router.post(
  *              description: Internal Server Error
  */
 router.get("/show-all", productController.showProduct);
+
 /**
  * @swagger
- * /admin/products/{id}:
+ * /admin/products/show/{id}:
  *  get:
  *      summery: show all of your product
  *      tags: [Products-Routes]
@@ -134,7 +135,53 @@ router.get("/show-all", productController.showProduct);
  *          500:
  *              description: Internal Server Error
  */
-router.get("/:id", productController.getOneProductById);
+router.get("/show/:id", productController.getOneProductById);
+/**
+ * @swagger
+ * /admin/products/remove/{id}:
+ *  delete:
+ *      summery: show all of your product
+ *      tags: [Products-Routes]
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
+ *              description: get object id and show product
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+router.delete("/remove/:id", productController.removeOneProductById);
+
+/**
+ * @swagger
+ * /admin/products/list:
+ *  get:
+ *      summery: show all of your product
+ *      tags: [Products-Routes]
+ *      parameters:
+ *          -   in: query
+ *              name: search
+ *              type: string
+ *              description: search in text and title and short text
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+router.get("/list", productController.getProductBySearch);
+
 module.exports = {
   productRoutes: router,
 };

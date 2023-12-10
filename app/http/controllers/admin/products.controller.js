@@ -62,10 +62,28 @@ class productController extends Controller {
         },
         { $unwind: "$supplier" },
       ]);
-      res.json({
+      return res.json({
         message: "find result",
         data: products,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getProductBySearch(req, res, next) {
+    try {
+      const search = req?.query?.search || "";
+      let product;
+      if (search) {
+        product = await this.models.ProductSchema.findOne({
+          $text: {
+            $search: search,
+          },
+        });
+      } else {
+        product = await this.models.ProductSchema.findOne({});
+      }
+      return res.status(201).json({ stasusCode: 201, data: { product } });
     } catch (error) {
       next(error);
     }
@@ -74,8 +92,26 @@ class productController extends Controller {
     try {
       const { id } = req.params;
       const product = await this.findProductById(id);
-      res.status(200).json({
+      return res.status(200).json({
         statusCode: 200,
+        data: { product },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async removeOneProductById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const product = await this.findProductById(id);
+      const removeResult = await this.models.ProductSchema.deleteOne({
+        _id: product._id,
+      });
+      if (removeResult.deletedCount <= 0)
+        throw createHttpError.InternalServerError("حذف انجام نشد ");
+      return res.status(200).json({
+        statusCode: 200,
+        message: "محصول با موفقیت حذف شد ",
         data: { product },
       });
     } catch (error) {
