@@ -57,10 +57,28 @@ ListOfImageFromRequest = (files, fileUploadPath) => {
     return [];
   }
 };
+
+function copyObject(object) {
+  return JSON.parse(JSON.stringify(object));
+}
+
+function setFeatures(body) {
+  const { length, height, width, weight } = body;
+  let feature = {};
+  if (!isNaN(+length) || !isNaN(+height) || !isNaN(+width) || !isNaN(+weight)) {
+    !width ? (feature.width = 0) : (feature.width = +width);
+    !weight ? (feature.weight = 0) : (feature.weight = +weight);
+    !height ? (feature.height = 0) : (feature.height = +height);
+    !length ? (feature.length = 0) : (feature.length = +length);
+  }
+  return feature;
+}
 module.exports = {
   randomDigitNumber,
   signAccessToken,
   signRefreshToken,
   deleteFile,
   ListOfImageFromRequest,
+  copyObject,
+  setFeatures,
 };

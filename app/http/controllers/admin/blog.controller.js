@@ -117,7 +117,6 @@ class BlogController extends Controller {
   }
   async updateBlogById(req, res, next) {
     try {
-      console.log("here 4");
       const { id } = req.params;
       const blog = await this.checkBlog(id);
       if (req?.body?.fileUploadPath && req?.body?.fileName) {

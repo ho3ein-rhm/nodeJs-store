@@ -1,6 +1,8 @@
 const {
   deleteFile,
   ListOfImageFromRequest,
+  copyObject,
+  setFeatures,
 } = require("../../../utils/functions");
 const {
   createProductSchema,
@@ -115,6 +117,41 @@ class productController extends Controller {
         data: { product },
       });
     } catch (error) {
+      next(error);
+    }
+  }
+  async updateProduct(req, res, next) {
+    try {
+      console.log("here in try!");
+      const { id } = req.params;
+      const data = copyObject(req.body);
+      data.images = ListOfImageFromRequest(
+        req?.files || [],
+        req.body.fileUploadPath
+      );
+      data.features = setFeatures(req.body);
+      let nullishData = ["", " ", "0", 0, null, undefined];
+      let blackList = [
+        "bookmark",
+        "deslike",
+        "comments",
+        "likes",
+        "supplier",
+        "length",
+        "weight",
+        "height",
+        "width",
+      ];
+      Object.keys(data).forEach((key) => {
+        if (blackList.includes(key)) delete data[key];
+        if (typeof data[key] == "string") data[key] = data[key].trim();
+        if (Array.isArray(data[key]) && data[key] > 0)
+          data[key].map((e) => (e = e.trim()));
+        if (Array.isArray(data[key]) && data[key] < 0) delete data[key];
+        if (nullishData.includes(data[key])) delete data[key];
+      });
+    } catch (error) {
+      deleteFile(req.body.images);
       next(error);
     }
   }
