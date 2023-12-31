@@ -122,8 +122,8 @@ class productController extends Controller {
   }
   async updateProduct(req, res, next) {
     try {
-      console.log("here in try!");
       const { id } = req.params;
+      const product = await this.findProductById(id);
       const data = copyObject(req.body);
       data.images = ListOfImageFromRequest(
         req?.files || [],
@@ -150,6 +150,20 @@ class productController extends Controller {
         if (Array.isArray(data[key]) && data[key] < 0) delete data[key];
         if (nullishData.includes(data[key])) delete data[key];
       });
+      const updateResult = await this.models.ProductSchema.updateOne(
+        {
+          _id: product._id,
+        },
+        { $set: data }
+      );
+      if (updateResult.modifiedCount > 0) {
+        return res.json({
+          status: 200,
+          message: " بروز رسانی با  موفقیت انجام شد",
+        });
+      } else {
+        throw { status: 500, message: " خطای  داخلی سرور " };
+      }
     } catch (error) {
       deleteFile(req.body.images);
       next(error);
