@@ -24,7 +24,7 @@ function verifyAcsessToken(req, res, next) {
     return next();
   });
 }
-function verifyRefreshToken(token) {
+function verifyRefreshToken(token, next) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, SECRET_KEY, async (err, decode) => {
       if (err) reject(next(createError.Unauthorized("خطایی  رخ داده است ")));
