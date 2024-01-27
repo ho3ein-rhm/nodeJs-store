@@ -17,7 +17,7 @@ function verifyAcsessToken(req, res, next) {
     const { mobile } = decode || {};
     const user = await userModel.findOne(
       { phone: mobile },
-      { password: 0, otp: 0, discount: 0, bills: 0, _id: 0, __v: 0 }
+      { password: 0, otp: 0, discount: 0, bills: 0, __v: 0 }
     );
     if (!user) return next(createError.Unauthorized("خطایی  رخ داده است "));
     req.user = user;

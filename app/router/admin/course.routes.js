@@ -11,7 +11,6 @@ const router = require("express").Router();
  *      name : Courses-Routes
  */
 
-
 /**
  * @swagger
  *  components:
@@ -68,6 +67,31 @@ const router = require("express").Router();
  *                Types:
  *                    $ref: '#/components/schemas/Types'
  */
+
+
+
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *        AddChapter:
+ *            type: object
+ *            required:
+ *                -   id
+ *                -   title
+ *            properties:
+ *                id:
+ *                    type: string
+ *                    description: the mongodb id
+ *                title:
+ *                    type: string
+ *                    description: title of episodes
+ *                text:
+ *                    type: string
+ *                    description: Description about episode
+ */
+
+
 
 /**
  * @swagger
@@ -136,6 +160,81 @@ router.post(
   "/add-course",
   fileUpload.single("image"),
   CourseController.createCourses
+);
+/**
+ * @swagger
+ * /admin/courses/show/{id}:
+ *  post:
+ *      summery: get course by id
+ *      tags: [Courses-Routes]
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
+ *              description: find course By id
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+
+router.post("/show/:id", CourseController.getCourseById);
+
+/**
+ * @swagger
+ * /admin/courses/add-episode:
+ *  put:
+ *      summery: craete chapter courses
+ *      tags: [Courses-Routes]
+ *      description: creating the curses
+ *      requestBody:
+ *          content:
+ *            multipart/form-data:
+ *                schema:
+ *                    $ref: '#/components/schemas/AddChapter'
+ *            application/x-www-form-urlencoded:
+ *                schema:
+ *                    $ref: '#/components/schemas/AddChapter'  
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+
+router.put("/add-episode", CourseController.craeteChapter);
+
+/**
+ * @swagger
+ *  /admin/courses/list-chapter-of-courses/{id}:
+ *   get:
+ *      summery: create chapter
+ *      tags: [Courses-Routes]
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+router.get(
+  "/list-chapter-of-courses/:id",
+  CourseController.listChapterOfCourses
 );
 module.exports = {
   courseRoutes: router,
