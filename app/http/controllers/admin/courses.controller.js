@@ -74,7 +74,6 @@ class controller extends Controller {
   async craeteChapter(req, res, next) {
     try {
       const { id, text, title } = req.body;
-      console.log(req.body);
       await this.findCourseById(id);
       const coures = await this.models.CourseModel.updateOne(
         { _id: id },
@@ -107,6 +106,86 @@ class controller extends Controller {
       next(error);
     }
   }
+  async removeChapter(req, res, next) {
+    try {
+      const { id } = req.params;
+      await this.getOneChapter(id);
+      const chapterResult = await this.models.CourseModel.updateOne(
+        {
+          "chapters._id": id,
+        },
+        {
+          $pull: {
+            chapters: {
+              _id: id,
+            },
+          },
+        }
+      );
+      if (chapterResult.modifiedCount == 0)
+        throw new createHttpError.InternalServerError("حذف نشد");
+      return res.status(200).json({
+        statusCode: 200,
+        data: {
+          message: "فصل با موفقیت حذف شد",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateChapter(req, res, next) {
+    try {
+      const { id } = req.params;
+      await this.getOneChapter(id);
+      const data = req.body;
+      let blackList = ["_id", "course"];
+      let nullishData = ["", " ", "0", 0, null, undefined];
+      console.log(data);
+      Object.keys(data).forEach((key) => {
+        if (blackList.includes(data[key])) delete data[key];
+        if (nullishData.includes(data[key])) delete data[key];
+        if (typeof data[key] == "string") data[key] == data[key].trim();
+        if (Array.isArray(data[key]) && Array.length > 0)
+          data[key] = data[key].map((item) => item.trim());
+      });
+      console.log(data);
+      const chapterResult = await this.models.CourseModel.updateOne(
+        {
+          "chapters._id": id,
+        },
+        {
+          $set: {
+            "chapters.$": data,
+          },
+        }
+      );
+      if (chapterResult.modifiedCount <= 0)
+        throw new createHttpError.InternalServerError("ویرایش فصل  انجام نشد");
+      return res.status(200).json({
+        statusCode: 200,
+        data: {
+          message: "ویرایش با موفقیت انجام شد",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async chapterOfCorses(req, res, next) {
+    try {
+      const { id } = req.params;
+      const chapters = await this.getOneChapter(id);
+      return res.status(201).json({
+        statusCode: 201,
+        data: {
+          chapters,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
   async findCourseById(id) {
     if (!mongoose.isValidObjectId(id))
       throw createHttpError.NotAcceptable("شناسه صحیح نمی باشد");
@@ -125,7 +204,7 @@ class controller extends Controller {
     return chapter;
   }
   async getOneChapter(id) {
-    const chapter = this.models.CourseModel.find(
+    const chapter = await this.models.CourseModel.find(
       { "chapters._id": id },
       { "chapters.$": 1 }
     );

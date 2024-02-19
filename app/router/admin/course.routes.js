@@ -68,6 +68,20 @@ const router = require("express").Router();
  *                    $ref: '#/components/schemas/Types'
  */
 
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *        update-chapter:
+ *            type: object
+ *            properties:
+ *                title:
+ *                    type: string
+ *                    description: tile of product
+ *                text:
+ *                    type: string
+ *                    description: short text of product
+ */
 
 
 /**
@@ -90,8 +104,6 @@ const router = require("express").Router();
  *                    type: string
  *                    description: Description about episode
  */
-
-
 
 /**
  * @swagger
@@ -199,7 +211,7 @@ router.post("/show/:id", CourseController.getCourseById);
  *                    $ref: '#/components/schemas/AddChapter'
  *            application/x-www-form-urlencoded:
  *                schema:
- *                    $ref: '#/components/schemas/AddChapter'  
+ *                    $ref: '#/components/schemas/AddChapter'
  *      responses:
  *          201:
  *              description: Success
@@ -236,6 +248,75 @@ router.get(
   "/list-chapter-of-courses/:id",
   CourseController.listChapterOfCourses
 );
+/**
+ * @swagger
+ *  /admin/courses/chapter-of-courses/{id}:
+ *   post:
+ *      summery: search for chapter
+ *      tags: [Courses-Routes]
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+router.post("/chapter-of-courses/:id", CourseController.chapterOfCorses);
+
+/**
+ * @swagger
+ *  /admin/courses/remove-chapter/{id}:
+ *   delete:
+ *      summery: remove chapter
+ *      tags: [Courses-Routes]
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+router.delete("/remove-chapter/:id", CourseController.removeChapter);
+
+/**
+ * @swagger
+ *  /admin/courses/update-chapter/{id}:
+ *   patch:
+ *      summery: remove chapter
+ *      tags: [Courses-Routes]
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *      requestBody:
+ *          content:
+ *            application/x-www-form-urlencoded:
+ *                schema:
+ *                    $ref: '#/components/schemas/update-chapter'
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+router.patch("/update-chapter/:id", CourseController.updateChapter);
+
+
 module.exports = {
   courseRoutes: router,
 };

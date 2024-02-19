@@ -127,7 +127,6 @@ class BlogController extends Controller {
         deleteFile(blog.images);
       }
       const data = req.body;
-      console.log(req.body.fileName);
       let nullishData = ["", " ", "0", 0, null, undefined];
       let blackList = ["comments", "like", "deslike", "bookmark", "author"];
       Object.keys(data).forEach((key) => {
