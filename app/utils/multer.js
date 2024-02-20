@@ -49,12 +49,26 @@ const fileFilter = (req, file, cb) => {
   }
   return cb(createHttpError.BadRequest("فرمت فایل صحیح نمیباشد"));
 };
+const videoFilter = (req, file, cb) => {
+  const ext = file.mimetype;
+  if (ext.includes("mkv", "mp4", "mov")) {
+    return cb(null, true);
+  }
+  return cb(createHttpError.BadRequest("فرمت فایل صحیح نمیباشد"));
+};
 const maxSize = 1 * 1000 * 1000;
+const videoSize = 300 * 1000 * 1000;
 const fileUpload = multer({
   storage,
   fileFilter,
   limits: { fileSize: maxSize },
 });
+const videoUpload = multer({
+  storage,
+  videoFilter,
+  limits: { fileSize: videoSize },
+});
 module.exports = {
   fileUpload,
+  videoUpload,
 };

@@ -6,7 +6,7 @@ const path = require("path");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const { Allrouters } = require("./router/router");
-
+require('dotenv').config();
 module.exports = class Application {
   #app = express();
   #Db_URI;
@@ -26,6 +26,9 @@ module.exports = class Application {
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(express(path.join(__dirname, "..", "public")));
+    this.#app.use(
+      express.static(path.join(__dirname, "..", "public"))
+    );
     this.#app.use(
       "/api-doc",
       swaggerUi.serve,

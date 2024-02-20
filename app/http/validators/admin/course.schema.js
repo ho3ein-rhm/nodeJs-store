@@ -40,4 +40,21 @@ const courseValidateSchema = Joi.object({
     .error(createHttpError.BadRequest("لطفعا مبلغ صحیح را  وارد  کنید")),
 });
 
-module.exports = { courseValidateSchema };
+const createEpisodeSchema = Joi.object({
+  title: Joi.string().error(createHttpError.BadRequest("عنوان صحیح نمی باشد ")),
+  text: Joi.string().error(createHttpError.BadRequest("عنوان صحیح نمی باشد ")),
+  type: Joi.string().regex(/(lock|unlock)/),
+  chapterID: Joi.string()
+    .pattern(mongodbRegex)
+    .error(createHttpError.BadRequest("شناسه مورد نظر  صحیح  نمی باشد ")),
+  courseID: Joi.string()
+    .pattern(mongodbRegex)
+    .error(createHttpError.BadRequest("شناسه مورد نظر  صحیح  نمی باشد ")),
+  fileUploadPath: Joi.string().error(
+    createHttpError.BadRequest("فرمت آدرس  صحیح نمیباشد")
+  ),
+  fileName: Joi.string().error(
+    createHttpError.BadRequest("نام فایل صحیح نمیباشد")
+  ),
+});
+module.exports = { courseValidateSchema , createEpisodeSchema};

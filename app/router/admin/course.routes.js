@@ -2,6 +2,7 @@ const {
   CourseController,
 } = require("../../http/controllers/admin/courses.controller");
 const { fileUpload } = require("../../utils/multer");
+const episodeRoutes = require("./episode.routes");
 
 const router = require("express").Router();
 

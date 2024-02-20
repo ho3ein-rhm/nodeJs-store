@@ -73,6 +73,23 @@ function setFeatures(body) {
   }
   return feature;
 }
+function getTime(secends) {
+  let total = Math.round(secends) / 60;
+  let [minutes, percent] = String(total).split(".");
+  let secend = Math.round((percent * 60) / 100)
+    .toString()
+    .substring(0, 2);
+  let houre = 0;
+  if (minutes > 60) {
+    total = minutes / 60;
+    let [h1, m2] = String(total).split(".");
+    houre = h1;
+    minutes = Math.round((m2 * 60) / 100)
+      .toString()
+      .substring(0, 2);
+  }
+  return (houre+ ":" + minutes + ":" + secend)
+}
 module.exports = {
   randomDigitNumber,
   signAccessToken,
@@ -81,4 +98,5 @@ module.exports = {
   ListOfImageFromRequest,
   copyObject,
   setFeatures,
+  getTime
 };
