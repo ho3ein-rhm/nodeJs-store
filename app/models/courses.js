@@ -10,9 +10,9 @@ const Episodes = new mongoose.Schema(
   },
   { toJSON: { virtuals: true } }
 );
-// Episodes.virtual("videoURL").get(function () {
-//   return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.videoAddress}`;
-// });
+Episodes.virtual("videoURL").get(function () {
+  return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.videoAddress}`;
+});
 const Chapter = new mongoose.Schema({
   title: { type: String, required: true },
   text: { type: String, default: "" },
@@ -59,9 +59,9 @@ const CourseSchema = new mongoose.Schema(
 );
 CourseSchema.index({ title: "text", short_text: "text", text: "text" });
 
-// CourseSchema.virtual("imageURL").get(function () {
-//   return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.image}`;
-// });
+CourseSchema.virtual("imageURL").get(function () {
+  return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.image}`;
+});
 // CourseSchema.virtual("totalTime").get(function () {
 //   return getTimeOfCourse(this.chapters || []);
 // });

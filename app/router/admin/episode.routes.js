@@ -73,6 +73,31 @@ const router =  require('express').Router();
  */
 
 router.post("/add",videoUpload.single('video'),episodeController.addepisode)
+
+/**
+ * @swagger
+ * /admin/episode/remove/{id}:
+ *  delete:
+ *      summery: remove episode by id
+ *      tags: [Episode-Routes]
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
+ *              description: remove episode By id
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthrorization
+ *          500:
+ *              description: Internal Server Error
+ */
+
+router.delete("/remove/:id", episodeController.removeEpisode);
+
 module.exports = {
     episodeRoutes : router
 }
