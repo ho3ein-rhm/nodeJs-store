@@ -19,9 +19,13 @@ const schema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    toJSON: {virtuals : true}
+    toJSON: { virtuals: true },
   }
 );
+
+schema.virtual("imageURL").get(function () {
+  return `${process.env.BASE_URL}:${process.env.APLICATION_PORT}/${this.images}`;
+});
 
 module.exports = {
   blogModel: mongoose.model("blog", schema),

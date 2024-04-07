@@ -1,31 +1,16 @@
 const {
   GraphQLObjectType,
   GraphQLSchema,
-  GraphQLInt,
-  GraphQLString,
 } = require("graphql");
+const { BlogResolver } = require("./queries/blog.resolver");
+const { ProductResolver } = require("./queries/product.resolver");
+const { childCaregoryResolver } = require("./queries/childCategory.resolver");
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
   fields: {
-    blogs: {
-      type: new GraphQLObjectType({
-        name: "blogsType",
-        fields: {
-          id: { type: GraphQLInt },
-          title: { type: GraphQLString },
-          text: { type: GraphQLString },
-          image: { type: GraphQLString },
-        },
-      }),
-      resolve: () => {
-        return {
-          id: 1,
-          title: "blog title",
-          text: "blog test",
-          image: "blog image",
-        };
-      },
-    },
+    blogs: BlogResolver,
+    product: ProductResolver,
+    childCategory : childCaregoryResolver
   },
 });
 

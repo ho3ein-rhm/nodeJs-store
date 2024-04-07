@@ -31,8 +31,7 @@ class BlogController extends Controller {
     try {
       // const blogs = await this.models.blogModel
       //   .find({})
-      //   .populate("author")
-      //   .populate("category");
+      //   .populate([{ path: "author" }, { path: "category" }]);
       const blogs = await this.models.blogModel.aggregate([
         { $match: {} },
         {
@@ -69,7 +68,7 @@ class BlogController extends Controller {
           },
         },
       ]);
-      res.json({
+      return res.json({
         statusCode: 201,
         data: {
           blogs,
