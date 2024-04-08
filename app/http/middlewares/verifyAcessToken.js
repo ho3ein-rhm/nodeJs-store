@@ -51,8 +51,27 @@ function checkRole(role) {
     }
   };
 }
+
+async function verifyAcsessTokeninGraphQL(req) {
+  try {
+    const tokenschema = req.headers?.authorization || "";
+    if (!tokenschema)
+      throw new createError.Unauthorized("حساب کاربری یافت نشد");
+    const tokenArray = tokenschema.split(" ");
+    const token = tokenArray[1];
+    const { mobile } = jwt.verify(token, SECRET_KEY);
+    console.log(mobile);
+    const user = await userModel.findOne({ mobile }, { password: 0, otp: 0 });
+    if (!user) throw new createError.Unauthorized("حساب کاربری یافت نشد");
+    return user;
+  } catch (error) {
+    console.log("here in verify catch block...!")
+    throw new createError.Unauthorized();
+  }
+}
 module.exports = {
   verifyAcsessToken,
   verifyRefreshToken,
   checkRole,
+  verifyAcsessTokeninGraphQL,
 };

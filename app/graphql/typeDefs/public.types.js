@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLString } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLList } = require("graphql");
 
 const AuthorTypes = new GraphQLObjectType({
   name: "AuthorType",
@@ -9,12 +9,22 @@ const AuthorTypes = new GraphQLObjectType({
   },
 });
 
+const ChildCategoryTypes = new GraphQLObjectType({
+  name: "ChildCategoryTypes",
+  fields: {
+    _id: { type: GraphQLString },
+    title: { type: GraphQLString },
+    parent: { type: GraphQLString },
+  },
+});
+
 const CategoryTypes = new GraphQLObjectType({
   name: "CategoryType",
   fields: {
     _id: { type: GraphQLString },
     title: { type: GraphQLString },
     parent: { type: GraphQLString },
+    children: { type: new GraphQLList(ChildCategoryTypes) },
   },
 });
 
