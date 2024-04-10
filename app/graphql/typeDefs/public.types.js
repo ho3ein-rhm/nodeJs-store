@@ -1,4 +1,17 @@
-const { GraphQLObjectType, GraphQLString, GraphQLList } = require("graphql");
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLList,
+  GraphQLScalarType,
+} = require("graphql");
+const { toObject, parseLiteral } = require("../utils");
+
+const AnyType = new GraphQLScalarType({
+  name: "anyType",
+  parseValue: toObject,
+  serialize: toObject,
+  parseLiteral: parseLiteral,
+});
 
 const AuthorTypes = new GraphQLObjectType({
   name: "AuthorType",
@@ -24,7 +37,7 @@ const CategoryTypes = new GraphQLObjectType({
     _id: { type: GraphQLString },
     title: { type: GraphQLString },
     parent: { type: GraphQLString },
-    children: { type: new GraphQLList(ChildCategoryTypes) },
+    children: { type: new GraphQLList(AnyType) },
   },
 });
 

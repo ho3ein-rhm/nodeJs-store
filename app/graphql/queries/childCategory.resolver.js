@@ -10,7 +10,7 @@ const childCaregoryResolver = {
     const title = args.parent || undefined;
     if (title) {
       return await categoryModel.find({
-        title: { $regex: new RegExp(title, 'i') },
+        title: { $regex: new RegExp(title, "i") },
       });
     }
     return await categoryModel.find({});
