@@ -5,6 +5,7 @@ const {
 const { BlogResolver } = require("./queries/blog.resolver");
 const { ProductResolver } = require("./queries/product.resolver");
 const { childCaregoryResolver } = require("./queries/childCategory.resolver");
+const { CommentResover } = require("./queries/comment.resolver");
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
   fields: {
@@ -16,12 +17,14 @@ const RootQuery = new GraphQLObjectType({
 
 const RooyMutations = new GraphQLObjectType({
   name: "Mutations",
-  fields: {},
+  fields: {
+    CrateComments: CommentResover,
+  },
 });
 
 const graphQlSchema = new GraphQLSchema({
   query: RootQuery,
-  // mutation: RooyMutations,
+  mutation: RooyMutations,
 });
 
 module.exports = {

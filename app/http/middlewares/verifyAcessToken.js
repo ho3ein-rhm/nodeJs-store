@@ -65,7 +65,6 @@ async function verifyAcsessTokeninGraphQL(req) {
     if (!user) throw new createError.Unauthorized("حساب کاربری یافت نشد");
     return user;
   } catch (error) {
-    console.log("here in verify catch block...!")
     throw new createError.Unauthorized();
   }
 }
